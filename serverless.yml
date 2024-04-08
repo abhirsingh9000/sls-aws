@@ -1,0 +1,32 @@
+service: a-test
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: "dev"
+  region: "us-east-1"
+  timeout: 30
+  stackTags:
+    Project: "MyProject"
+    deployed_by: "Abhir"
+    deployed_tag: "master"
+    deployed_on: "<date>"
+  deploymentBucket: 'my-deployment-bucket'
+
+package:
+  exclude:
+    - .gitignore
+    - bitbucket-pipelines.yml
+    - README.md
+    - serverless.yml
+  excludeDevDependencies: true
+  individually: true
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: /
+          method: get
+          cors: true
